@@ -63,6 +63,13 @@ int main(int argc, const char *argv[])
         DataFrame frame;
         frame.cameraImg = imgGray;
         dataBuffer.push_back(frame);
+        
+        /* deleting from the buffer to make it a ring buffer */
+        // as the data will be pushed to the buffer one at a time, below logic will work
+        if(dataBuffer.size() == (dataBufferSize+1)) //wait for buffer to have atleast "dataBufferSize" elements before deleting
+        {
+            dataBuffer.erase (dataBuffer.begin());
+        }
 
         //// EOF STUDENT ASSIGNMENT
         cout << "#1 : LOAD IMAGE INTO BUFFER done" << endl;
@@ -81,10 +88,30 @@ int main(int argc, const char *argv[])
         {
             detKeypointsShiTomasi(keypoints, imgGray, false);
         }
+        else if (detectorType.compare("HARRIS") == 0)
+        {
+            detKeypointsHarris(keypoints, imgGray, false);
+        }
         else
         {
-            //...
+            /* FAST, BRISK, ORB, AKAZE, SIFT */
+            detKeypointsModern(keypoints, imgGray, detectorType, false);
         }
+
+        if (   (detectorType.compare("SHITOMASI") != 0)
+            && (detectorType.compare("HARRIS") != 0)
+            && (detectorType.compare("FAST") != 0)
+            && (detectorType.compare("BRISK") != 0)
+            && (detectorType.compare("ORB") != 0)
+            && (detectorType.compare("AKAZE") != 0)
+            && (detectorType.compare("SIFT") != 0)
+        )
+        {
+            std::cout<< "ERROR: PLEASE SELECT A VALID DETECTOR" << std::endl;
+            throw invalid_argument(detectorType + " is not supported, only SHITOMASI, HARRIS, FAST, BRISK, ORB, AKAZE, SIFT is supported");
+            //return 0; //get out of the code
+        }
+        
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
@@ -95,7 +122,13 @@ int main(int argc, const char *argv[])
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
-            // ...
+            for (auto it = keypoints.begin(); it != keypoints.end(); /* NOTHING */)
+            {
+                if (vehicleRect.contains(it->pt))
+                    ++it;
+                else
+                    it = keypoints.erase(it);
+            }
         }
 
         //// EOF STUDENT ASSIGNMENT
