@@ -18,6 +18,21 @@
 
 #include "dataStructures.h"
 
+//comment the below line of midterm evaluation loop needs to be deactivated
+#define MIDTERMLOOP
+
+//activate below line to get CSV output for easy comparision in excel sheet
+//will only work if MIDTERMLOOP is active
+#define CSVOUT
+
+#ifdef MIDTERMLOOP
+//for accumulate
+#include <numeric>
+
+extern std::vector<double> descriptorTime;
+extern std::vector<double> detectorTime;
+#endif
+
 
 void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis=false);
 void detKeypointsShiTomasi(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis=false);
