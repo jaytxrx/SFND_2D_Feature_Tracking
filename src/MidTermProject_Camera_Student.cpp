@@ -116,7 +116,7 @@ int main(int argc, const char *argv[])
 #ifdef MIDTERMLOOP
         string detectorType = detector_type_name;
 #else
-        string detectorType = "AKAZE";
+        string detectorType = "SHITOMASI";
 #endif
 
         //// STUDENT ASSIGNMENT
@@ -200,7 +200,7 @@ int main(int argc, const char *argv[])
 #ifdef MIDTERMLOOP
         string descriptorType = descriptor_type_name;
 #else
-        string descriptorType = "AKAZE"; // BRIEF, ORB, FREAK, AKAZE, SIFT
+        string descriptorType = "BRISK"; // BRIEF, ORB, FREAK, AKAZE, SIFT
 #endif
 
         descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
