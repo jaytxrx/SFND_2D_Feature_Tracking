@@ -1,9 +1,42 @@
 ## Mid-Term Project Report - Camera Based 2D Feature Tracking
 
-For assignments MP.1 to MP.6, refer the source code.
+This report describes how the assignments points were addressed.
 
-For pending assignments, refer below
-All the below data are generated from [report.csv](report.csv)
+All the tables shown below were generated from [report.csv](report.csv)
+
+### MP.1 Data Buffer Optimization
+
+Ring buffer is implemented in the file *MidTermProject_Camera_Student.cpp* by checking the size of the buffer. If the buffer size is more than the configured buffer size, the first element in the buffer is deleted using erase function of the vector.
+
+### MP.2 Keypoint Detection
+
+In the file *matching2D_Student.cpp*, two functions were newly implemented *detKeypointsHarris()* and *detKeypointsModern()*
+
+*detKeypointsHarris()* is similar to the function *detKeypointsShiTomasi()* with only a difference in the boolean flag **useHarrisDetector** passed to *cv::goodFeaturesToTrack()*. In  *detKeypointsHarris()* , the flag is set to **TRUE**.
+
+*detKeypointsModern()* implemented the detectors FAST, BRISK, ORB, AKAZE, SIFT. After creating  each of detector using the corresponding function *create()* present inside each of the class, the function *detect()* was called to detect the keypoints. Execution time was measured by checking how much time the function *detect()* took. IF..ELSE statement was used to select the keypoint detector.
+
+### MP.3 Keypoint Removal
+
+The keypoints outside the rectangle (region of interest - preceding car) was deleted with support of the function *contains()* inside the class *cv::Rect*. If the keypoint didnt exist inside the rectange, that corresponding kepoint was deleted and the iterator was updated with the next element. If the keypoint existed inside the rectagle, then the iterator was incremented to the next keypoint.
+
+### MP.4 Keypoint Descriptors
+
+In the file *matching2D_Student.cpp*, the function *descKeypoints()* was updated with the descriptor implementation for BRIEF, ORB, FREAK, AKAZE and SIFT. After creating  each of descriptor using the corresponding function *create()* present inside each of the class, the function *compute()* was called to compute the descriptors. Execution time was measured by checking how much time the function *compute()* took. IF..ELSE statement was used to select the descriptor.
+
+### MP.5 Descriptor Matching
+
+Descriptor Matching based on bruteforce or FLANN is implemented inside the function *matchDescriptors()*  in *matching2D_Student.cpp*.
+
+If bruteforce matching is used, the distance function *NORM_HAMMING* was selected if the discriptor type was binary or else(for SIFT) the *NORM_L2* (Sum of Squared Differences - SSD) was selected.
+
+For FLANN based matching, the function *cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED)* is called.
+
+Depending on Bruteforce or FLANN, the matching was done based on Nearest Neighbour or K Nearest Neighbour(k=2).
+
+### MP.6 Descriptor Distance Ratio
+
+Inside the function *matchDescriptors()* in *matching2D_Student.cpp*, for K Nearest Neighbour, the distance ratio that were passing the threshold(0.8) was only selected.
 
 ### MP.7 - Number of detected Keypoints on the preceding vehicle for total of 10 images
 

@@ -1,5 +1,7 @@
 # SFND 2D Feature Tracking
 
+For project writeup, refer [Mid-Term_ProjectReport.md](Mid-Term_ProjectReport.md)
+
 <img src="images/keypoints.png" width="820" height="248" />
 
 The idea of the camera course is to build a collision detection system - that's the overall goal for the Final Project. As a preparation for this, you will now build the feature tracking part and test various detector / descriptor combinations to see which ones perform best. This mid-term project consists of four parts:
@@ -68,4 +70,10 @@ cd build
 cmake -D CMAKE_BUILD_TYPE=RELEASE -D OPENCV_ENABLE_NONFREE=ON -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -D WITH_GTK=ON ..
 make
 sudo make install
+```
+
+While running CMAKE on Ubuntu 20.04, there were some errors. I had to install the following packages.
+```
+sudo apt-get install libgtk2.0-dev pkg-config
+sudo apt install gnome-themes-standard
 ```
